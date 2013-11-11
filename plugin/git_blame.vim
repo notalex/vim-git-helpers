@@ -23,15 +23,27 @@ function! s:SetupBlameMappings()
   nmap <buffer> q :bdelete<CR>
 endfunction
 
+function! s:SetupSyntaxHighlighting(syntax)
+  execute 'set syntax=' . a:syntax
+
+  syntax match GitBlameHash /\v^[^ ]+/
+  syntax match GitBlameInfo /\s(.\+\d)/
+
+  hi GitBlameHash ctermfg=157 guifg=#afffaf
+  hi GitBlameInfo ctermfg=252 guifg=#d0d0d0
+endfunction
+
 function! s:SetupBlameBufferAndMappings()
   let l:blame_window_number = bufwinnr(s:blame_buffer_name)
 
   if l:blame_window_number < 0
     let s:file_name = expand('%:.')
+    let l:syntax = &syntax
 
     execute 'edit ' . s:blame_buffer_name
     set buftype=nowrite
     set nowrap
+    call <SID>SetupSyntaxHighlighting(l:syntax)
 
     call <SID>SetupBlameMappings()
   else
