@@ -28,12 +28,18 @@ function! s:SetupBlameBufferAndMappings()
 endfunction
 
 function! s:GitBlame(starting_commit)
-  call s:SetupBlameBufferAndMappings()
+  " Whether the source is the original file or the blame bufffer, the line
+  " number should be retained.
+  let l:source_line_number = line('.')
+
+  call <SID>SetupBlameBufferAndMappings()
 
   let l:data = system('git blame ' . a:starting_commit . '^ ' . s:file_name)
   let l:data_list = split(l:data, "\n")
 
   call setline(1, l:data_list)
+
+  execute l:source_line_number
 endfunction
 
 command! GBlame call <SID>GitBlame(s:default_starting_commit)
