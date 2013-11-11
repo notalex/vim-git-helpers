@@ -51,6 +51,17 @@ function! s:SetupBlameBufferAndMappings()
   endif
 endfunction
 
+function! s:WriteResultsOrEchoErrors(data_list)
+  let l:error = matchstr(a:data_list[0], '^fatal:.\+$')
+
+  if strlen(l:error)
+    echom l:error
+  else
+    normal! ggdG
+    call setline(1, a:data_list)
+  endif
+endfunction
+
 function! s:GitBlame(starting_commit)
   " Whether the source is the original file or the blame buffer, the line
   " number should be retained.
@@ -62,9 +73,7 @@ function! s:GitBlame(starting_commit)
     \ ' --date ' . s:blame_date_format . ' ' . s:file_name)
 
   let l:data_list = split(l:data, "\n")
-
-  normal! ggdG
-  call setline(1, l:data_list)
+  call <SID>WriteResultsOrEchoErrors(l:data_list)
 
   execute l:source_line_number
 endfunction
