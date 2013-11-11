@@ -3,11 +3,23 @@ let s:default_starting_commit = 'HEAD'
 
 function! s:BlameCommitUnderCursor()
   let l:commit_hash = expand('<cWORD>')
-  call <SID>GitBlame(l:commit_hash)
+
+  if strlen(l:commit_hash)
+    call <SID>GitBlame(l:commit_hash)
+  else " When there is a blank buffer after UndoWithLineNumberRetain.
+    redo
+  endif
+endfunction
+
+function! s:UndoWithLineNumberRetain()
+  let l:line_number = line('.')
+  undo
+  execute l:line_number
 endfunction
 
 function! s:SetupBlameMappings()
   nmap <buffer> <C-n> :call <SID>BlameCommitUnderCursor()<CR>
+  nmap <buffer> <C-p> :call <SID>UndoWithLineNumberRetain()<CR>
   nmap <buffer> q :bdelete<CR>
 endfunction
 
