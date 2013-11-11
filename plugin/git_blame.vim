@@ -37,6 +37,7 @@ function! s:GitBlame(starting_commit)
   let l:data = system('git blame ' . a:starting_commit . '^ ' . s:file_name)
   let l:data_list = split(l:data, "\n")
 
+  normal! ggdG
   call setline(1, l:data_list)
 
   execute l:source_line_number
