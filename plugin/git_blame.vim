@@ -58,7 +58,9 @@ function! s:GitBlame(starting_commit)
 
   call <SID>SetupBlameBufferAndMappings()
 
-  let l:data = system('git blame ' . a:starting_commit . '^ ' . s:file_name)
+  let l:data = system('git blame ' . a:starting_commit . '^ ' .
+    \ ' --date ' . s:blame_date_format . ' ' . s:file_name)
+
   let l:data_list = split(l:data, "\n")
 
   normal! ggdG
@@ -67,4 +69,11 @@ function! s:GitBlame(starting_commit)
   execute l:source_line_number
 endfunction
 
-command! GBlame call <SID>GitBlame(s:default_starting_commit)
+function! s:Blame(starting_commit, date_format)
+  let s:blame_date_format = a:date_format
+
+  call <SID>GitBlame(a:starting_commit)
+endfunction
+
+command! GBlame call <SID>Blame(s:default_starting_commit, 'short')
+command! GBlameLong call <SID>Blame(s:default_starting_commit, 'iso')
