@@ -33,7 +33,7 @@ function! s:SetupBlameBufferAndMappings()
     set buftype=nowrite
     set nowrap
 
-    call s:SetupBlameMappings()
+    call <SID>SetupBlameMappings()
   else
     execute l:blame_window_number . 'wincmd w'
   endif
