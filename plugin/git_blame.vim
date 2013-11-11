@@ -7,8 +7,8 @@ function! s:BlameCommitUnderCursor()
 endfunction
 
 function! s:SetupBlameMappings()
-  nmap ~ :call <SID>BlameCommitUnderCursor()<CR>
-  nmap q :bdelete<CR>
+  nmap <buffer> ~ :call <SID>BlameCommitUnderCursor()<CR>
+  nmap <buffer> q :bdelete<CR>
 endfunction
 
 function! s:SetupBlameBufferAndMappings()
