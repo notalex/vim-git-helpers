@@ -28,7 +28,7 @@ function! s:SetupBlameBufferAndMappings()
 endfunction
 
 function! s:GitBlame(starting_commit)
-  " Whether the source is the original file or the blame bufffer, the line
+  " Whether the source is the original file or the blame buffer, the line
   " number should be retained.
   let l:source_line_number = line('.')
 
