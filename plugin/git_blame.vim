@@ -13,7 +13,13 @@ endfunction
 
 function! s:UndoWithLineNumberRetain()
   let l:line_number = line('.')
-  undo
+  silent! undo
+
+  if !strlen(getline(1))
+    silent! redo
+    echom 'Start of Blame history'
+  end
+
   execute l:line_number
 endfunction
 
