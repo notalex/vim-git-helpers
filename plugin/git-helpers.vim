@@ -1,14 +1,11 @@
 function! s:CheckoutCurrentFile()
-  let l:checkout_log = system('git checkout ' . expand('%'))
+  let l:current_pwd = getcwd()
 
-  if strlen(matchstr(l:checkout_log, '^error: pathspec'))
-    let l:current_pwd = getcwd()
+  " Switching to file's folder avoids errors when *pwd* is not under git.
+  lcd %:h
+  call system('git checkout ' . expand('%'))
 
-    lcd %:h
-    call system('git checkout ' . expand('%'))
-
-    execute 'lcd ' . l:current_pwd
-  endif
+  execute 'lcd ' . l:current_pwd
 
   edit!
 endfunction
