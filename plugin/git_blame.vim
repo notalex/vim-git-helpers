@@ -80,8 +80,8 @@ function! s:GitBlame(starting_commit)
 
   call s:StoreScriptFileName()
 
-  let l:data = system('git blame ' . a:starting_commit .
-    \ '^ ' . ' --date ' . s:blame_date_format . ' ' .  s:file_name)
+  let l:data = git_helper_library#GitCommand('blame ' . a:starting_commit .
+    \ '^ ' . ' --date ' . s:blame_date_format, s:file_name)
 
   call <SID>SetupBlameBufferAndMappings()
 
