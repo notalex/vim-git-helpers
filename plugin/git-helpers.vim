@@ -1,6 +1,15 @@
 function! s:CheckoutCurrentFile()
-  let l:file_path = expand('%')
-  call system('git checkout ' . l:file_path)
+  let l:checkout_log = system('git checkout ' . expand('%'))
+
+  if strlen(matchstr(l:checkout_log, '^error: pathspec'))
+    let l:current_pwd = getcwd()
+
+    lcd %:h
+    call system('git checkout ' . expand('%'))
+
+    execute 'lcd ' . l:current_pwd
+  endif
+
   edit!
 endfunction
 
