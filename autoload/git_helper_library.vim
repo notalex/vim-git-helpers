@@ -1,4 +1,4 @@
-function! git_helper_library#GitCommand(command, file_path)
+function! git_helper_library#GitCommandForPath(command, file_path)
   let l:current_pwd = getcwd()
 
   if strlen(matchstr(a:file_path, '\v.+/.+'))
@@ -13,4 +13,8 @@ function! git_helper_library#GitCommand(command, file_path)
   execute 'lcd ' . l:current_pwd
 
   return l:output
+endfunction
+
+function! git_helper_library#GitCommand(command)
+  call git_helper_library#GitCommandForPath(a:command, expand('%'))
 endfunction
