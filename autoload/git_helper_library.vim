@@ -16,5 +16,5 @@ function! git_helper_library#GitCommandForPath(command, file_path)
 endfunction
 
 function! git_helper_library#GitCommand(command)
-  call git_helper_library#GitCommandForPath(a:command, expand('%'))
+  return git_helper_library#GitCommandForPath(a:command, expand('%'))
 endfunction
