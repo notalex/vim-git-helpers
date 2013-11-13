@@ -43,7 +43,6 @@ function! s:SetupBlameBufferAndMappings()
   let l:blame_window_number = bufwinnr(s:blame_buffer_name)
 
   if l:blame_window_number < 0
-    let s:file_name = expand('%:.')
     let l:syntax = &syntax
 
     execute 'edit ' . s:blame_buffer_name
@@ -68,15 +67,23 @@ function! s:WriteResultsOrEchoErrors(data_list)
   endif
 endfunction
 
+function! s:StoreScriptFileName()
+  if !exists('s:file_name')
+    let s:file_name = expand('%')
+  endif
+endfunction
+
 function! s:GitBlame(starting_commit)
   " Whether the source is the original file or the blame buffer, the line
   " number should be retained.
   let l:source_line_number = line('.')
 
-  call <SID>SetupBlameBufferAndMappings()
+  call s:StoreScriptFileName()
 
-  let l:data = system('git blame ' . a:starting_commit . '^ ' .
-    \ ' --date ' . s:blame_date_format . ' ' . s:file_name)
+  let l:data = system('git blame ' . a:starting_commit .
+    \ '^ ' . ' --date ' . s:blame_date_format . ' ' .  s:file_name)
+
+  call <SID>SetupBlameBufferAndMappings()
 
   let l:data_list = split(l:data, "\n")
   call <SID>WriteResultsOrEchoErrors(l:data_list)
