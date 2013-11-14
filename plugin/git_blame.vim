@@ -68,7 +68,7 @@ function! s:WriteResultsOrEchoErrors(data_list)
 endfunction
 
 function! s:StoreScriptFileName()
-  if !exists('s:file_name')
+  if expand('%:t') != s:blame_buffer_name
     let s:file_name = expand('%')
   endif
 endfunction
