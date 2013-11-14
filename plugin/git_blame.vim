@@ -23,10 +23,15 @@ function! s:UndoWithLineNumberRetain()
   execute l:line_number
 endfunction
 
+function! s:ReopenSourceFile()
+  execute 'edit ' . s:file_name
+  execute 'bdelete ' . s:blame_buffer_name
+endfunction
+
 function! s:SetupBlameMappings()
   nmap <buffer> <C-n> :call <SID>BlameCommitUnderCursor()<CR>
   nmap <buffer> <C-p> :call <SID>UndoWithLineNumberRetain()<CR>
-  nmap <buffer> q :bdelete<CR>
+  nmap <buffer> q :call <SID>ReopenSourceFile()<CR>
 endfunction
 
 function! s:SetupSyntaxHighlighting(syntax)
