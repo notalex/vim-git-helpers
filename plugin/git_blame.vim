@@ -25,7 +25,6 @@ endfunction
 
 function! s:ReopenSourceFile()
   execute 'edit ' . s:file_name
-  execute 'bdelete ' . s:blame_buffer_name
 endfunction
 
 function! s:SetupBlameMappings()
@@ -51,6 +50,7 @@ function! s:SetupBlameBufferAndMappings()
     let l:syntax = &syntax
 
     execute 'edit ' . s:blame_buffer_name
+    autocmd! BufHidden <buffer> execute 'bdelete ' . s:blame_buffer_name
     set buftype=nowrite
     set nowrap
     call <SID>SetupSyntaxHighlighting(l:syntax)
