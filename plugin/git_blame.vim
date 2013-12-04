@@ -52,6 +52,7 @@ endfunction
 function! s:SetupBlameBufferAndMappings()
   let l:blame_window_number = bufwinnr(s:blame_buffer_name)
 
+  " When doing nested blame inside a blame buffer.
   if l:blame_window_number < 0
     let l:syntax = &syntax
 
