@@ -43,6 +43,12 @@ function! s:SetupSyntaxHighlighting(syntax)
   hi GitBlameInfo ctermfg=252 guifg=#d0d0d0
 endfunction
 
+function! s:SetupBlameBufOptions()
+  autocmd! BufHidden <buffer> execute 'bdelete ' . s:blame_buffer_name
+  set buftype=nowrite
+  set nowrap
+endfunction
+
 function! s:SetupBlameBufferAndMappings()
   let l:blame_window_number = bufwinnr(s:blame_buffer_name)
 
@@ -50,9 +56,7 @@ function! s:SetupBlameBufferAndMappings()
     let l:syntax = &syntax
 
     execute 'edit ' . s:blame_buffer_name
-    autocmd! BufHidden <buffer> execute 'bdelete ' . s:blame_buffer_name
-    set buftype=nowrite
-    set nowrap
+    call <SID>SetupBlameBufOptions()
     call <SID>SetupSyntaxHighlighting(l:syntax)
 
     call <SID>SetupBlameMappings()
