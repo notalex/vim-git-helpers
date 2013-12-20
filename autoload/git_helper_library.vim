@@ -18,3 +18,16 @@ endfunction
 function! git_helper_library#GitCommand(command)
   return git_helper_library#GitCommandForPath(a:command, expand('%'))
 endfunction
+
+function! git_helper_library#SetupTempBuffer(buffer_name)
+  set buftype=nowrite
+  set nowrap
+endfunction
+
+function! git_helper_library#StoreScriptFileName()
+  let s:file_name = expand('%')
+endfunction
+
+function! git_helper_library#ReopenSourceFile()
+  execute 'edit ' . s:file_name
+endfunction
