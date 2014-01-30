@@ -41,4 +41,4 @@ function! s:Diff()
   wincmd w
 endfunction
 
-command! Gdiff call <SID>Diff()
+command! GDiff call <SID>Diff()
