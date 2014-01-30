@@ -14,6 +14,11 @@ endfunction
 function! s:SetupDiffOffMappings()
   nmap <buffer> q :call <SID>DiffOff()<CR>
 endfunction
+
+function! s:SetupTempBuffer()
+  execute 'edit ' . s:diff_buffer_name
+  call git_helper_library#SetupTempBuffer(s:diff_buffer_name)
+endfunction
 " }}}
 
 function! s:Diff()
@@ -21,8 +26,7 @@ function! s:Diff()
   call git_helper_library#StoreScriptFileName()
   let l:data = git_helper_library#GitCommand('show HEAD~0:./' . expand('%:t'))
 
-  execute 'edit ' . s:diff_buffer_name
-  call git_helper_library#SetupTempBuffer(s:diff_buffer_name)
+  call <SID>SetupTempBuffer()
 
   call <SID>SetupSyntaxHighlighting(l:syntax)
   call <SID>SetupDiffOffMappings()
