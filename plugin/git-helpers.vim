@@ -49,9 +49,22 @@ function! s:ShowCommitMessage()
   call <SID>ColoredEcho(message)
 endfunction
 
+function! s:AddToCache()
+  call git_helper_library#GitCommand('add')
+  let status = git_helper_library#GitCommandForPath('status', '')
+
+  let pattern = '\vcommitted:.+\)(.+)Changes not staged'
+
+  if strlen(matchstr(status, pattern))
+    let message = matchlist(status, pattern)[1]
+    call <SID>ColoredEcho(message)
+  endif
+endfunction
+
 hi GitOutput ctermfg=lightgreen
 
 command! GCheckout call <SID>CheckoutCurrentFile()
 command! GCopyBlameHash call <SID>CopyBlameHash()
 command! GCacheAndReset call <SID>CacheAndReset()
 command! GShow call <SID>ShowCommitMessage()
+command! GAdd call <SID>AddToCache()
