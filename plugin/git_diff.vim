@@ -21,7 +21,7 @@ function! s:SetupTempBuffer()
 endfunction
 " }}}
 
-function! s:Diff()
+function! s:DiffHead()
   let l:syntax = &syntax
   call git_helper_library#StoreScriptFileName()
   let l:data = git_helper_library#GitCommand('show HEAD~0:./' . expand('%:t'))
@@ -41,4 +41,4 @@ function! s:Diff()
   wincmd w
 endfunction
 
-command! GDiff call <SID>Diff()
+command! GDiffHead call <SID>DiffHead()
