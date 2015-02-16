@@ -19,19 +19,17 @@ function! s:SetupTempBuffer()
   execute 'edit ' . s:diff_buffer_name
   call git_helper_library#SetupTempBuffer(s:diff_buffer_name)
 endfunction
-" }}}
 
-function! s:DiffHead()
+function! s:SetupDiffBuffers(data)
   let l:syntax = &syntax
   call git_helper_library#StoreScriptFileName()
-  let l:data = git_helper_library#GitCommand('show HEAD~0:./' . expand('%:t'))
 
   call <SID>SetupTempBuffer()
 
   call <SID>SetupSyntaxHighlighting(l:syntax)
   call <SID>SetupDiffOffMappings()
 
-  let l:data_list = split(l:data, "\n")
+  let l:data_list = split(a:data, "\n")
   call setline(1, l:data_list)
 
   call git_helper_library#ReopenSourceFile()
@@ -41,4 +39,23 @@ function! s:DiffHead()
   wincmd w
 endfunction
 
+" }}}
+
+function! s:DiffHead()
+  let head_data = git_helper_library#GitCommand('show HEAD~0:./' . expand('%:t'))
+  call <SID>SetupDiffBuffers(head_data)
+endfunction
+
+function! s:Diff()
+  let cached_data = git_helper_library#GitCommand('show :' . expand('%'))
+  let diff_data = git_helper_library#GitCommand('diff')
+
+  if strlen(cached_data) && strlen(diff_data)
+    call <SID>SetupDiffBuffers(cached_data)
+  else
+    call <SID>DiffHead()
+  end
+endfunction
+
+command! GDiff call <SID>Diff()
 command! GDiffHead call <SID>DiffHead()
