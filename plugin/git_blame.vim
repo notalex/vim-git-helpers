@@ -25,6 +25,7 @@ endfunction
 
 function! s:ReopenSourceFile()
   execute 'edit ' . s:file_name
+  call common_functions_lib#SetAlternateFile(s:previous_file)
 endfunction
 
 function! s:SetupBlameMappings()
@@ -88,6 +89,7 @@ function! s:GitBlame(starting_commit)
   " number should be retained.
   let l:source_line_number = line('.')
 
+  let s:previous_file = expand('#')
   call s:StoreScriptFileName()
 
   let l:data = git_helper_library#GitCommandForPath('blame ' . a:starting_commit .

@@ -9,6 +9,7 @@ function! s:DiffOff()
   execute 'bdelete! ' . s:diff_buffer_name
   diffoff
   nnoremap <buffer> q q
+  call common_functions_lib#SetAlternateFile(s:previous_file)
 endfunction
 
 function! s:SetupDiffOffMappings()
@@ -22,6 +23,7 @@ endfunction
 
 function! s:SetupDiffBuffers(data)
   let l:syntax = &syntax
+  let s:previous_file = expand('#')
   call git_helper_library#StoreScriptFileName()
 
   call <SID>SetupTempBuffer()
